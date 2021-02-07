@@ -13,14 +13,13 @@ export const login = async(req, res) => {
     const invalid = { status: 400, message: 'Invalid email and password combination' };
 
     try {
-        const agent = await Agents.findOne({ "credentials.email": req.body.email })
+        const agent = await Agents.findOne({ "credentials.email": req.body.email }, '_id credentials fullName address phone')
             .exec();
 
         if (!agent) {
 
             return res.status(401).send(invalid);
         }
-        console.log(req.body.password);
         const match = await agent.checkPassword(req.body.password);
         if (!match) {
             return res.status(400).send(invalid);

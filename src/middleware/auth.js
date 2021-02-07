@@ -3,7 +3,7 @@ const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 import { Roles } from '../resources/roles/roles.model';
 import config from '../config';
-import { Agents } from '../resources/agents/agents.model';
+
 
 
 module.exports = function() {
@@ -11,7 +11,8 @@ module.exports = function() {
     opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
     opts.secretOrKey = config.secret;
     var strategy = new JwtStrategy(opts, function(payload, done) {
-        Agents.findOne({ id: payload.sub }, function(err, user) {
+        console.log(payload._id);
+        Roles.findOne({ userId: payload._id }, function(err, user) {
             if (err) {
                 return done(err, false);
             }

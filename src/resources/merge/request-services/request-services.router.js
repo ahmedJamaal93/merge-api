@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import controllers from './request-services.controller';
+import controllers, { checkStatus } from './request-services.controller';
 
 const router = Router()
 
@@ -7,6 +7,9 @@ const router = Router()
 router
     .route('/')
     .get(controllers.getMany);
+router
+    .route('/checkStatus')
+    .post(checkStatus);
 
 //add country
 router.route('/')

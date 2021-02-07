@@ -12,6 +12,7 @@ import BusinessRouter from '../resources/business/business.router';
 import webRtcRouter from '../resources/merge/webRtc/webRtc.router';
 import reviewRouter from '../resources/merge/reviews/reviews.router';
 import requestServiceRouter from '../resources/merge/request-services/request-services.router';
+import testRouter from '../resources/testRotes/test.router';
 
 const error = require('../middleware/error');
 
@@ -31,6 +32,7 @@ module.exports = function(app) {
     app.use('/webRtc', webRtcRouter);
     app.use('/reviews', reviewRouter);
     app.use('/requestService', requestServiceRouter);
+    app.use('/test', testRouter);
 
     app.use(error);
 };

@@ -16,6 +16,13 @@ const baseConfig = {
     jwtSession: {
         session: false
     },
+    mailService: {
+        SENDGRID_API_KEY: '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'
+    },
+    SmsService: {
+        TWILIO_ACCOUNT_SID: 'AC2c4f216bc2b9f73957afbd90129643ff',
+        TWILIO_AUTH_TOKEN: '6ed4346ddfa599f8de5ba3d6bd1ed68d'
+    },
     redisPassword: "",
     secrets: {
         jwt: process.env.JWT_SECRET,
