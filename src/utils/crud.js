@@ -37,7 +37,6 @@ export const getMany = model => async(req, res) => {
         if (!docs) {
             return res.status(400).send({ message: 'No Data Found.' });
         }
-        console.log(docs);
         res.status(200).json({
             data: docs
         });

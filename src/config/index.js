@@ -13,6 +13,9 @@ const baseConfig = {
     nossl: true,
     ssl: true,
     secret: "NanoTools@@@666",
+    jwtSession: {
+        session: false
+    },
     redisPassword: "",
     secrets: {
         jwt: process.env.JWT_SECRET,

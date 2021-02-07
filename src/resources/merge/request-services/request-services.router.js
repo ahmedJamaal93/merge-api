@@ -1,19 +1,11 @@
 import { Router } from 'express'
-import controllers from './categories.controller';
-const passport = require("passport");
-var auth = require('../../middleware/auth')();
+import controllers from './request-services.controller';
+
 const router = Router()
 
 // get all data
 router
     .route('/')
-    .get(controllers.getMany);
-router
-    .route('/api')
-    .get(auth.authenticate(), controllers.getMany);
-
-router
-    .route('/apiSecure')
     .get(controllers.getMany);
 
 //add country

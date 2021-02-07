@@ -3,22 +3,9 @@ import { Agents } from './agents.model'
 import config from '../../config';
 import bcrypt from 'bcrypt';
 
-import jwt from 'jsonwebtoken';
+import { genrateWebToken } from '../../utils/jwt';
 const { admin, firebase } = require("../../firebase/firebase");
 
-export const newToken = Agents => {
-    return jwt.sign({ id: Agents.id }, config.secrets.jwt, {
-        expiresIn: config.secrets.jwtExp
-    });
-};
-
-export const verifyToken = token =>
-    new Promise((resolve, reject) => {
-        jwt.verify(token, config.secrets.jwt, (err, payload) => {
-            if (err) return reject(err);
-            resolve(payload);
-        });
-    });
 export const login = async(req, res) => {
     if (!req.body.email || !req.body.password) {
         return res.status(400).send({ message: 'need email and password' });
@@ -35,11 +22,10 @@ export const login = async(req, res) => {
         }
         console.log(req.body.password);
         const match = await agent.checkPassword(req.body.password);
-        console.log(match);
         if (!match) {
             return res.status(400).send(invalid);
         }
-        const token = newToken(agent);
+        const token = genrateWebToken(agent);
         return res.status(201).send({ token, agent, status: 201 });
     } catch (e) {
         console.error(e);
@@ -106,7 +92,7 @@ export const signUp = async(req, res) => {
 
         });
 
-        const token = newToken(doc);
+        const token = genrateWebToken(doc);
 
         console.log(doc);
         res.status(201).json({

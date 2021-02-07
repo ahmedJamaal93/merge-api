@@ -11,15 +11,17 @@ const reviewSchema = new mongoose.Schema({
 
     },
     rating: {
-        type: Number,
+        type: String,
         required: [true, 'Please provide Rating From 1 to 5'],
-        max: 5,
-        min: 0
+
 
     },
     review: {
         type: String,
 
+    },
+    callType: {
+        type: String
     }
 
 }, { collation: 'merge_review' }, { timestamps: true });

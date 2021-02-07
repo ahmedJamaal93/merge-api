@@ -1,10 +1,10 @@
 import { crudControllers } from '../../utils/crud';
-import { Employees } from './employees.model';
+import { Employee } from './employees.model';
 
 
 export const getDetails = async(req, res) => {
     try {
-        const employee = await Employees.find()
+        const employee = await Employee.find()
 
         if (!employee) {
             return res.status(400).send({ message: 'No Data Found.' });
@@ -21,7 +21,7 @@ export const getDetails = async(req, res) => {
 }
 export const getOneDetails = async(req, res) => {
     try {
-        const employee = await Employees.findById({ _id: req.params.id })
+        const employee = await Employee.findById({ _id: req.params.id })
 
         .populate('rolesID')
 
@@ -40,4 +40,4 @@ export const getOneDetails = async(req, res) => {
     }
 }
 
-export default crudControllers(Employees);
+export default crudControllers(Employee);
