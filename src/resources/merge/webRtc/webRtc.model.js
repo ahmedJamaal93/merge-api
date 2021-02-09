@@ -17,6 +17,6 @@ const webRtcSchema = new mongoose.Schema({
     }
 
 
-}, { timestamps: true });
+}, { collection: 'merge-webRtc' }, { timestamps: true });
 
 export const WebRtc = mongoose.model('WebRtc', webRtcSchema);
