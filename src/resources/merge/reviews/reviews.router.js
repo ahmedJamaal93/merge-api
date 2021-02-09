@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import controllers from './reviews.controller';
+import controllers, { createOne } from './reviews.controller';
 
 const router = Router()
 
@@ -10,7 +10,7 @@ router
 
 //add country
 router.route('/')
-    .post(controllers.createOne)
+    .post(createOne)
 
 // get country by id
 router

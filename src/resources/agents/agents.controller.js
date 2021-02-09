@@ -1,11 +1,11 @@
 import { crudControllers } from '../../utils/crud'
 import { Agents } from './agents.model'
 const uploadFile = require("../../middleware/fileUpload");
-const { fileUploader } = require("../../middleware/fileUpload");
-export const PATH = "./assets/uploads/agent"
+const { fileUpload } = require("../../middleware/fileUpload");
+var destFolder = require('../../utils/dest-folder');
 export const updateAgent = async(req, res) => {
     try {
-        console.log(req.body);
+
         const items = await Agents.findByIdAndUpdate({ _id: req.params.id }, {...req.body,
 
         }, { upsert: true })
@@ -24,7 +24,7 @@ export const updateAgent = async(req, res) => {
 export const updateProfilePic = async(req, res) => {
 
     try {
-
+        destFolder.setFolderName('agent');
         await uploadFile(req, res);
         const items = await Agents.findByIdAndUpdate({ _id: req.params.id }, {
             profilePicUrl: req.file.filename

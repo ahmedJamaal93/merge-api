@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { monitorLogin, monitorSignUp } from './AuthEmployee.controller';
-import controllers from './employees.controller';
+import { changePassword, monitorLogin, monitorSignUp } from './AuthEmployee.controller';
+import controllers, { updateProfilePic } from './employees.controller';
 import { getDetails, getOneDetails } from './employees.controller';
 
 const router = Router();
@@ -37,5 +37,14 @@ router.route('/auth/login')
 
 router.route('/auth/signUp')
     .post(monitorSignUp)
+
+router
+    .route('/uploadPic/:id')
+    .put(updateProfilePic)
+router
+    .route('/changePassword/:id')
+    .put(changePassword)
+
+
 
 export default router

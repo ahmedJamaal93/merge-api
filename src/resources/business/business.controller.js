@@ -1,6 +1,7 @@
 import { crudControllers } from '../../utils/crud'
 import { Business } from './business.model'
 import bcrypt from 'bcrypt';
+var destFolder = require('../../utils/dest-folder');
 const uploadFile = require("../../middleware/fileUpload");
 const { fileUploader } = require("../../middleware/fileUpload");
 export const PATH = "./assets/uploads/business"
@@ -59,6 +60,7 @@ export const updateBusiness = async(req, res) => {
 export const updateProfilePic = async(req, res) => {
 
     try {
+        destFolder.setFolderName('business');
 
         await uploadFile(req, res);
         const items = await Business.findByIdAndUpdate({ _id: req.params.id }, {

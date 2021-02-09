@@ -7,12 +7,15 @@ import signlanguageRouter from '../resources/signLanguage/signLanguage.router';
 import RolesRouter from '../resources/roles/roles.router';
 
 import EmployeeRouter from '../resources/employees/employees.router';
+import userRouter from '../resources/user/user.router';
 import BusinessRouter from '../resources/business/business.router';
 
 import webRtcRouter from '../resources/merge/webRtc/webRtc.router';
 import reviewRouter from '../resources/merge/reviews/reviews.router';
 import requestServiceRouter from '../resources/merge/request-services/request-services.router';
 import testRouter from '../resources/testRotes/test.router';
+import paymentFawryRouter from '../resources/payment/fawry/fawry.router';
+import paymentPayTabsRouter from '../resources/payment/payTabs/payTabs.router';
 
 const error = require('../middleware/error');
 
@@ -20,6 +23,7 @@ module.exports = function(app) {
     app.use(express.json());
 
     app.use('/agent', agentRouter);
+    app.use('/users', userRouter);
 
 
     app.use('/category', categoryRouter);
@@ -33,6 +37,9 @@ module.exports = function(app) {
     app.use('/reviews', reviewRouter);
     app.use('/requestService', requestServiceRouter);
     app.use('/test', testRouter);
+
+    app.use('/paymentFawry', paymentFawryRouter);
+    app.use('/paymentpayTabs', paymentPayTabsRouter);
 
     app.use(error);
 };

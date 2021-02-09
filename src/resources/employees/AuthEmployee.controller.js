@@ -2,14 +2,10 @@ import { crudControllers } from '../../utils/crud';
 import { Employees } from './employees.model';
 import config from '../../config';
 import jwt from 'jsonwebtoken';
-
+import { genrateWebToken } from '../../utils/jwt';
 const { admin } = require("../../firebase/firebase");
 
-export const newToken = Employees => {
-    return jwt.sign({ id: Employees.id }, config.secrets.jwt, {
-        expiresIn: config.secrets.jwtExp
-    });
-};
+
 export const monitorSignUp = async(req, res) => {
     console.log(req.body);
     if (!req.body.credentials.email || !req.body.credentials.password || !req.body.fullName) {
@@ -23,16 +19,8 @@ export const monitorSignUp = async(req, res) => {
             password: req.body.credentials.password
         });
         console.log(user.uid);
-        const token = newToken(user);
+        const token = genrateWebToken(user);
         const doc = await Employees.create({
-            /*fullName: req.body.fullName,
-            address: req.body.address,
-            
-            phone: req.body.phone,
-            credentials: {
-                email: req.body.credentials.email,
-                password: req.body.credentials.password,
-            }*/
             ...req.body,
             credentials: {
                 uid: user.uid,
@@ -60,7 +48,8 @@ export const monitorLogin = async(req, res) => {
     const invalid = { status: 400, message: 'Invalid email and password combination' };
 
     try {
-        const monitor = await Employees.findOne({ "credentials.email": req.body.email })
+        const monitor = await Employees.findOne({ "credentials.email": req.body.email },
+                '_id credentials fullName address phone')
             .exec();
 
         if (!monitor) {
@@ -72,7 +61,7 @@ export const monitorLogin = async(req, res) => {
         if (!match) {
             return res.status(400).send(invalid);
         }
-        const token = newToken(monitor);
+        const token = genrateWebToken(monitor);
         const id = monitor.id;
         return res.status(201).send({ token, id, monitor, status: 201 });
     } catch (e) {
@@ -80,5 +69,42 @@ export const monitorLogin = async(req, res) => {
         res.status(500).send({ message: e.message });
     }
 }
+export const changePassword = async(req, res) => {
+    if (!req.body.oldPassword || !req.body.password || !req.body.rePassword) {
+        return res.status(400).send({ message: 'need oldPassword and new password' });
+    }
+    const invalid = { status: 400, message: 'old password is not ' };
+
+    let userData = await Employees.findOne({ _id: req.params.id }).exec();
+    console.log(userData);
+    if (!userData) return res.status(401).send({ status: 401, message: "no Data Found.." });
+
+    const match = await userData.checkPassword(req.body.oldPassword);
+    if (!match) {
+        return res.status(400).send(invalid);
+    }
+    if (req.body.password != req.body.rePassword) return res.status(401).send({
+        status: 401,
+        message: "please enter matching password.."
+    });
+    try {
+
+        const hash = bcrypt.hashSync(req.body.password, 8);
+        console.log(hash);
+        const doc = await Employees.findByIdAndUpdate({ _id: req.params.id }, {
+            'credentials.password': hash,
+
+        }, { upsert: true })
+
+        res.status(201).json({
+            doc
+        });
+    } catch (e) {
+        console.error(e);
+        res.status(400).send({ status: 400, message: e.message });
+    }
+
+};
+
 
 export default crudControllers(Employees);

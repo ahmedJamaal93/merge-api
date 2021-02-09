@@ -27,7 +27,19 @@ const baseConfig = {
     secrets: {
         jwt: process.env.JWT_SECRET,
         jwtExp: '100d'
-    }
+    },
+    payment: {
+        fawry: {
+            BASE_URL: 'https://www.atfawry.com',
+            SANDBOX_URL: 'https://atfawry.fawrystaging.com',
+            API_PATH: '/ECommerceWeb/Fawry/payments/',
+            fawrySecureKey: '<fawry_secure_key>',
+            merchantCode: '1tSa6uxz2nTwlaAmt38enA=='
+        },
+        paytabs: {
+
+        }
+    },
 };
 
 let envConfig = {};

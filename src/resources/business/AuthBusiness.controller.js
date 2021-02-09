@@ -16,7 +16,8 @@ export const login = async(req, res) => {
     const invalid = { status: 400, message: 'Invalid email and password combination' };
 
     try {
-        const business = await Business.findOne({ "credentials.email": req.body.email })
+        const business = await Business.findOne({ "credentials.email": req.body.email },
+                '_id credentials name address phone')
             .exec();
 
         if (!business) {
@@ -46,7 +47,7 @@ export const signUpFireBase = async(req, res) => {
             password: req.body.password
         });
 
-        const token = newToken(business);
+        const token = genrateWebToken(business);
         const doc = await Business.create({
             name: req.body.name,
             address: req.body.address,
@@ -93,7 +94,7 @@ export const signUp = async(req, res) => {
 
         });
 
-        const token = newToken(doc);
+        const token = genrateWebToken(doc);
         res.status(201).json({
             token,
             doc
@@ -141,4 +142,3 @@ export const changePassword = async(req, res) => {
 };
 
 export default crudControllers(Business)
-    ///export default auth(Business)

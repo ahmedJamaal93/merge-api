@@ -1,13 +1,14 @@
 const util = require("util");
 
 const multer = require('multer');
-import { PATH } from "../resources/agents/agents.controller";
-//export var PATH = './assets/uploads/';
-console.log(PATH);
+const PATH = './assets/uploads/';
+
+var destFolder = require('../utils/dest-folder');
+
 const storage = multer.diskStorage({
 
     destination: (req, file, cb) => {
-        cb(null, PATH);
+        cb(null, PATH + destFolder.getFolderName());
     },
     filename: (req, file, cb) => {
         var filetype = '';
@@ -26,4 +27,5 @@ const storage = multer.diskStorage({
 
 let uploadFile = multer({ storage: storage }).single("file");
 let uploadFileMiddleware = util.promisify(uploadFile);
+
 module.exports = uploadFileMiddleware;
